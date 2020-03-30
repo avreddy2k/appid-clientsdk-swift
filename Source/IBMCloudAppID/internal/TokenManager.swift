@@ -109,7 +109,7 @@ internal class TokenManager {
 
                 guard let errorText = response.responseText,
                     let errorJson = try? Utils.parseJsonStringtoDictionary(errorText) as? [String: String],
-                    let errorDescription = errorJson?["error_description"] else {
+                    let errorDescription = errorJson["error_description"] else {
                         tokenResponseDelegate.onAuthorizationFailure(error: .authorizationFailure("Failed to retrieve tokens"))
                         return
                 }
@@ -118,7 +118,7 @@ internal class TokenManager {
                     "Status code: \(response.statusCode ?? -1 ) " +
                     "Response: \(errorText)")
 
-                if response.statusCode == 400, errorJson?["error"] == "invalid_grant" {
+                if response.statusCode == 400, errorJson["error"] == "invalid_grant" {
                     tokenResponseDelegate.onAuthorizationFailure(error: .authorizationFailure(errorDescription))
                 } else if response.statusCode == 403 {
                     tokenResponseDelegate.onAuthorizationFailure(error: .authorizationFailure(errorDescription))
